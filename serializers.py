@@ -1,7 +1,7 @@
 from marshmallow import fields, validate
 from flask_marshmallow import Marshmallow
 
-from . import models
+from .models import proposalfield
 
 
 ma = Marshmallow()
@@ -13,7 +13,7 @@ def configure(app):
 
 class ClientSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = models.Client
+        model = proposalfield.Client
         load_instance = True
 
     user_name = fields.Str(required=True, validate=validate.Length(min=6, max=15))

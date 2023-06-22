@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_migrate import Migrate
-from models import configure as config_db
+from db.alchemy import configure as config_db
 
 
 
@@ -17,10 +17,11 @@ def init_app():
 
 
 def create_app():
-    app = init_app()
-
-    from models import ProposalField
+    from models.proposalfield import ProposalField
+    from models.proposal import Proposal
+    from models.response import Response
     from views import bp_hello
+    app = init_app()
     app.register_blueprint(bp_hello)
     return app
 
