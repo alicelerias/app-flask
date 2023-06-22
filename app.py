@@ -18,12 +18,14 @@ def init_app():
 
 
 def create_app():
-    from models.proposalfield import ProposalField
-    from models.proposal import Proposal
-    from models.response import Response
-    from views import bp_hello
+    # from models.proposal_field import ProposalField
+    # from models.proposal import Proposal
+    # from models.response import Response
+    from views.views import bp_hello
+    from views.proposal_field import proposal_field_bp
     app = init_app()
     app.register_blueprint(bp_hello)
+    app.register_blueprint(proposal_field_bp)
     return app
 
 

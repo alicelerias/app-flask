@@ -1,9 +1,8 @@
-from marshmallow import fields, validate
-from .marshmallow import ma
+from marshmallow import fields, validate, Schema
 
 from models.response import Response
 
-class ResponseSchema(ma.SQLAlchemyAutoSchema):
+class ResponseSchema(Schema):
     class Meta:
         model = Response
         load_instance = True

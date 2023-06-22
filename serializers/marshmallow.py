@@ -1,4 +1,4 @@
-from flask_marshmallow import Marshmallow
+from marshmallow_sqlalchemy import Marshmallow
 
 ma = Marshmallow()
 

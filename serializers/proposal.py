@@ -1,9 +1,8 @@
-from marshmallow import fields, validate
-from .marshmallow import ma
+from marshmallow import fields, validate, Schema
 
 from models.proposal import Proposal
 
-class ProposalSchema(ma.SQLAlchemyAutoSchema):
+class ProposalSchema(Schema):
     class Meta:
         model = Proposal
         load_instance = True
