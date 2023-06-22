@@ -1,3 +1,4 @@
+from os import getenv
 from flask import Flask
 from flask_migrate import Migrate
 from db.alchemy import configure as config_db
@@ -7,7 +8,7 @@ from db.alchemy import configure as config_db
 
 def init_app():
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1234@localhost:5432/credor_flask'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{getenv("DB_USER")}:{getenv("DB_PASSWORD")}@{getenv("DB_HOST")}:{getenv("DB_PORT")}/{getenv("DB_NAME")}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     config_db(app)
