@@ -25,3 +25,11 @@ def create_proposal_field():
     response = serializer.dump(proposal_field)
     response = serializer.dump(proposal_field)
     return jsonify(response), 201
+
+@proposal_field_bp.route('/proposal_fields', methods=["GET"])
+def get_proposal_fields():
+    bs = ProposalFieldSchema(many=True)
+    proposal_fields = ProposalField.query.all()
+    response = bs.dump(proposal_fields)
+    return jsonify(response), 200
+

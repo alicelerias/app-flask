@@ -13,7 +13,6 @@ def init_app():
 
     config_db(app)
     Migrate(app, app.db)
-
     return app
 
 
@@ -26,6 +25,7 @@ def create_app():
     app = init_app()
     app.register_blueprint(bp_hello)
     app.register_blueprint(proposal_field_bp)
+    
     return app
 
 
