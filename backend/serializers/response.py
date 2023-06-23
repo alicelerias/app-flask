@@ -13,5 +13,5 @@ class ResponseSchema(Schema):
     proposal_id = fields.Integer(required=True)
 
     proposal_field = fields.Nested('ProposalFieldSchema', only=['name'])
-    proposal = fields.Nested('ProposalSchema', only=['id'])
+    proposal = fields.Nested('ProposalSchema', only=['status'])
 

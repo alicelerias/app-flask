@@ -1,5 +1,50 @@
 version: '3'
 services:
+  api:
+    build:
+      dockerfile: ./docker/api
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_USER="postgres"
+      - DB_PASSWORD="1234"
+      - DB_HOST="localhost"
+      - DB_PORT="5432"
+      - DB_NAME="credor_flask"
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_PORT=5672
+    depends_on:
+      - postgres
+      - rabbitmq
+    command: >
+      sh -c "sleep 10 && flask db upgrade && FLASK_DEBUG=True && flask run"
+
+  worker:
+    build:
+      dockerfile: ./docker/worker
+    environment:
+      - DB_USER="postgres"
+      - DB_PASSWORD="1234"
+      - DB_HOST="localhost"
+      - DB_PORT="5432"
+      - DB_NAME="credor_flask"
+      - RABBITQM_HOST=rabbitmq
+      - RABBITQM_USER=guest
+      - RABBITQM_PASSWORD=guest
+      - RABBITQM_PORT=5672
+    depends_on:
+      - postgres
+      - rabbitmq
+      - api
+      
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  
   postgres:
     image: postgres
     ports:

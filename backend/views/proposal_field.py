@@ -23,7 +23,6 @@ def create_proposal_field():
     db.session.commit()
 
     response = serializer.dump(proposal_field)
-    response = serializer.dump(proposal_field)
     return jsonify(response), 201
 
 @proposal_field_bp.route('/proposal_fields', methods=["GET"])
