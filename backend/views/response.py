@@ -6,6 +6,7 @@ from serializers.proposal import ProposalSchema
 from models.response import Response
 from models.proposal import Proposal
 from db.alchemy import get_db
+from tasks import process_proposal
 
 response_bp = Blueprint("response", __name__)
 
@@ -15,27 +16,46 @@ proposal_serializer = ProposalSchema()
 
 @response_bp.route('/response', methods=["POST"])
 def create_response():
-    proposal_serializer = ProposalSchema()
     try:
-        
         proposal = {
             "status": "pending"
         }
         proposal_data = proposal_serializer.load(proposal)
         proposal_model = Proposal(**proposal_data)
-        db.session.add(proposal_model)
-        db.session.commit()
-        data = request.json
-        data["proposal_id"] = proposal_model.id
-        response_data = response_serializer.load(data)
-        response_model = Response(**response_data)
-        db.session.add(response_model)
-        db.session.commit()
-        response = response_serializer.dump(response_model)
+
+        with db.session.begin():
+            try:
+                db.session.add(proposal_model)
+                db.session.flush()
+
+                data = request.json.get("responses", [])
+                response_models = []
+
+                for response in data:
+                    response["proposal_id"] = proposal_model.id
+                    response_data = response_serializer.load(response)
+                    response_model = Response(**response_data)
+                    db.session.add(response_model)
+                    response_models.append(response_model)
+
+                db.session.commit()
+            except ValidationError as error:
+                db.session.rollback()
+                return jsonify({'errors': error.messages}), 400
+
+        response = {
+            "proposal": proposal_serializer.dump(proposal_model),
+            "responses": [response_serializer.dump(response_model) for response_model in response_models]
+        }
+
+        process_proposal.delay(proposal_model.id)
+
         return jsonify(response), 201
-    except ValidationError as error:
+    except ValidationError as e:
         db.session.rollback()
-        return jsonify({'errors': error.messages}), 400
+        return jsonify({'error': error.messages}), 500
+
+
 
 # @proposal_field_bp.route('/proposal_fields', methods=["GET"])
 # def get_proposal_fields():

@@ -6,11 +6,11 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - DB_USER="postgres"
-      - DB_PASSWORD="1234"
-      - DB_HOST="localhost"
-      - DB_PORT="5432"
-      - DB_NAME="credor_flask"
+      - DB_USER=postgres
+      - DB_PASSWORD=1234
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=credor_flask
       - RABBITMQ_HOST=rabbitmq
       - RABBITMQ_USER=guest
       - RABBITMQ_PASSWORD=guest
@@ -25,15 +25,15 @@ services:
     build:
       dockerfile: ./docker/worker
     environment:
-      - DB_USER="postgres"
-      - DB_PASSWORD="1234"
-      - DB_HOST="localhost"
-      - DB_PORT="5432"
-      - DB_NAME="credor_flask"
-      - RABBITQM_HOST=rabbitmq
-      - RABBITQM_USER=guest
-      - RABBITQM_PASSWORD=guest
-      - RABBITQM_PORT=5672
+      - DB_USER=postgres
+      - DB_PASSWORD=1234
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=credor_flask
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_PORT=5672
     depends_on:
       - postgres
       - rabbitmq

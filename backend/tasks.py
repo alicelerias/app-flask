@@ -12,7 +12,7 @@ log = celery.log
 
 
 @shared_task()
-def modify_client(id):
+def process_proposal(id):
     print("message received")
     try:
         proposal = Proposal.query.get(id)

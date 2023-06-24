@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ./backend .
 
-CMD ["celery", "-A", "credor-flask", "worker", "-l", "INFO"]
+CMD ["celery", "-A", "tasks", "worker", "-l", "INFO"]

@@ -4,7 +4,10 @@ from flask_migrate import Migrate
 from celery import Celery, Task
 from db.alchemy import configure as config_db
 
-
+RABBITMQ_HOST = getenv("RABBITMQ_HOST", "127.0.0.1")
+RABBITMQ_USER = getenv("RABBITMQ_USER", "guest")
+RABBITMQ_PASSWORD = getenv("RABBITMQ_PASSWORD", "guest")
+RABBITMQ_PORT = getenv("RABBITMQ_PORT", 5672)
 
 
 def init_app():
@@ -13,8 +16,7 @@ def init_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config.from_mapping(
         CELERY={
-            "CELERY_BROKER_URL": getenv("RABBITMQ_PORT"),
-            "CELERY_RESULT_BACKEND": getenv("RABBITMQ_PORT"),
+            "CELERY_BROKER_URL": f"amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}:{RABBITMQ_PORT}",
         }
     )
 
@@ -29,7 +31,7 @@ def init_celery():
                 return self.run(*args, **kwargs)
 
     app = init_app()
-    celery_app = Celery(app.name, broker=getenv("RABBITMQ_PORT"), task_cls=FlaskTask)
+    celery_app = Celery(app.name, broker=app.config['CELERY']['CELERY_BROKER_URL'], task_cls=FlaskTask)
     celery_app.config_from_object(app.config["CELERY"])
     celery_app.set_default()
     app.extensions["celery"] = celery_app
