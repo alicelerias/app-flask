@@ -14,7 +14,7 @@ db = get_db()
 response_serializer = ResponseSchema()
 proposal_serializer = ProposalSchema()
 
-@response_bp.route('/response', methods=["POST"])
+@response_bp.route('/proposal', methods=["POST"])
 def create_response():
     try:
         proposal = {
