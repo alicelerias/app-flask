@@ -1,6 +1,7 @@
 from os import getenv
 from flask import Flask
 from flask_migrate import Migrate
+from flask_cors import CORS
 from celery import Celery, Task
 from db.alchemy import configure as config_db
 
@@ -12,6 +13,7 @@ RABBITMQ_PORT = getenv("RABBITMQ_PORT", 5672)
 
 def init_app():
     app = Flask(__name__)
+    CORS(app, origins='http://localhost:3000')
     app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{getenv("DB_USER")}:{getenv("DB_PASSWORD")}@{getenv("DB_HOST")}:{getenv("DB_PORT")}/{getenv("DB_NAME")}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config.from_mapping(
