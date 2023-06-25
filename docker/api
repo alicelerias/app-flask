@@ -10,4 +10,4 @@ COPY ./backend .
 
 EXPOSE 5000
 
-CMD ["FLASK_DEBUG=True flask run"]
+CMD ["flask", "run"]

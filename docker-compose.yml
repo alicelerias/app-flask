@@ -29,7 +29,8 @@ services:
       - postgres
       - rabbitmq
     command: >
-      sh -c "sleep 10 && flask db upgrade && FLASK_DEBUG=True && flask run"
+      sh -c "sleep 10 && flask db upgrade && flask run --host=0.0.0.0"
+
 
   worker:
     build:
