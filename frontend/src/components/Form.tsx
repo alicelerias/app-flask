@@ -60,7 +60,7 @@ export const Form = () => {
                         {...register(field.name, {
                           required: field.nullable ? false : true,
                         })}
-                        type={field.type}
+                        type={field.type === "integer" ? "number" : "text"}
                         placeholder={field.name}
                         onClick={() => console.log(field.nullable)}
                       />
