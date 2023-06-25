@@ -8,6 +8,7 @@ click-didyoumean==0.3.0
 click-plugins==1.1.1
 click-repl==0.3.0
 Flask==2.3.2
+Flask-Cors==3.0.10
 Flask-Migrate==4.0.4
 Flask-SQLAlchemy==3.0.5
 greenlet==2.0.2
