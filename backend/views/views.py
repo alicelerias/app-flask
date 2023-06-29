@@ -7,7 +7,6 @@ from marshmallow import ValidationError
 bp_hello = Blueprint("hello", __name__)
 
 
-@bp_hello.route('/', methods=['GET'])
+@bp_hello.route("/", methods=["GET"])
 def hello():
     return "hello world"
-    

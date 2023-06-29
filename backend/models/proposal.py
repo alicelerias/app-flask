@@ -1,4 +1,3 @@
-
 from db.alchemy import get_db
 from .mixins import TimeStampedModel
 

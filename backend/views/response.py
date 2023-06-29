@@ -14,12 +14,11 @@ db = get_db()
 response_serializer = ResponseSchema()
 proposal_serializer = ProposalSchema()
 
-@response_bp.route('/proposal', methods=["POST"])
+
+@response_bp.route("/proposal", methods=["POST"])
 def create_response():
     try:
-        proposal = {
-            "status": "pending"
-        }
+        proposal = {"status": "pending"}
         proposal_data = proposal_serializer.load(proposal)
         proposal_model = Proposal(**proposal_data)
 
@@ -41,11 +40,14 @@ def create_response():
                 db.session.commit()
             except ValidationError as error:
                 db.session.rollback()
-                return jsonify({'errors': error.messages}), 400
+                return jsonify({"errors": error.messages}), 400
 
         response = {
             "proposal": proposal_serializer.dump(proposal_model),
-            "responses": [response_serializer.dump(response_model) for response_model in response_models]
+            "responses": [
+                response_serializer.dump(response_model)
+                for response_model in response_models
+            ],
         }
 
         process_proposal.delay(proposal_model.id)
@@ -53,8 +55,7 @@ def create_response():
         return jsonify(response), 201
     except ValidationError as e:
         db.session.rollback()
-        return jsonify({'error': error.messages}), 500
-
+        return jsonify({"error": error.messages}), 500
 
 
 # @proposal_field_bp.route('/proposal_fields', methods=["GET"])
@@ -85,9 +86,3 @@ def create_response():
 #     db.session.delete(proposal_field)
 #     db.session.commit()
 #     return jsonify({"message": "proposal field deleted sucessfully"}), 200
-
-    
-
-
-    
-       
